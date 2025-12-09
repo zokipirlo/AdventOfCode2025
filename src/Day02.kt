@@ -1,12 +1,8 @@
+import utils.parseString
 import utils.println
 import utils.readInput
 
 fun main() {
-    fun getAllNumbers(inputRange: String): LongRange {
-        val (min, max) = inputRange.split("-")
-        return LongRange(min.toLong(), max.toLong())
-    }
-
     fun findSequence(number: Long): Long? {
         val stringNum = number.toString()
         if (stringNum.length % 2 != 0) {
@@ -36,14 +32,14 @@ fun main() {
 
     fun part1(input: List<String>): Long {
        val hasSequence = input.first().split(",")
-            .map { getAllNumbers(it) }
+            .map { LongRange.parseString(it) }
             .flatMap { it.mapNotNull { findSequence(it) } }
         return hasSequence.sum()
     }
 
     fun part2(input: List<String>): Long {
         val hasSequence = input.first().split(",")
-            .map { getAllNumbers(it) }
+            .map { LongRange.parseString(it) }
             .flatMap { it.mapNotNull { findAnySequence(it) } }
         return hasSequence.sum()
     }

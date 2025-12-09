@@ -92,3 +92,23 @@ fun Long.concat(other: Long): Long {
     return thisShifted + other
 }
 
+fun LongRange.Companion.parseString(input: String): LongRange {
+    val (min, max) = input.split("-")
+    return LongRange(min.toLong(), max.toLong())
+}
+
+inline fun <T, R> Sequence<T>.mapWithHistory(
+    transform: (history: List<R>, item: T) -> R
+): List<R> {
+    val result = mutableListOf<R>()
+    for (item in this) {
+        result += transform(result, item)
+    }
+    return result
+}
+
+infix fun LongRange.within(other: LongRange): Boolean =
+    this.first >= other.first && this.last <= other.last
+
+infix fun Long.within(other: LongRange): Boolean =
+    this >= other.first && this <= other.last
