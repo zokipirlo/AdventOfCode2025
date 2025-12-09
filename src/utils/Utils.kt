@@ -97,12 +97,12 @@ fun LongRange.Companion.parseString(input: String): LongRange {
     return LongRange(min.toLong(), max.toLong())
 }
 
-inline fun <T, R> Sequence<T>.mapWithHistory(
-    transform: (history: List<R>, item: T) -> R
+inline fun <T, R> Iterable<T>.mapWithHistoryNotNull(
+    transform: (history: List<R>, item: T) -> R?
 ): List<R> {
     val result = mutableListOf<R>()
     for (item in this) {
-        result += transform(result, item)
+        transform(result, item)?.let { result += it }
     }
     return result
 }
@@ -112,3 +112,5 @@ infix fun LongRange.within(other: LongRange): Boolean =
 
 infix fun Long.within(other: LongRange): Boolean =
     this >= other.first && this <= other.last
+
+fun LongRange.size() = last - first + 1
